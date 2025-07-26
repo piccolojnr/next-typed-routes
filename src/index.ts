@@ -40,60 +40,29 @@ export type {
     TypeGenerator,
     RouteScanner,
     FileWatcher,
+} from "./types";
+
+// Route utilities
+export {
+    route,
+    isValidRoute,
+    getAllRoutes
+} from "./typed-routes/route";
+
+// Route types
+export type {
     ExtractParams,
     ParamRecord,
     RoutesWithParams,
     RoutesWithoutParams,
-    SearchParams,
-} from "./types";
+    SearchParams
+} from "./typed-routes/route";
 
 // React components (re-export from react module)
 export {
     createTypedLink,
     createTypedRouter,
     useTypedRouter
-} from "./react";
+} from "./typed-routes/react";
 
-// Route utility function - core functionality that stays in the library
-import type { ExtractParams, ParamRecord, SearchParams } from "./types";
 
-/**
- * Generate a URL from a route template with optional parameters and search params
- * @param template - The route template (e.g., "/user/[id]")
- * @param options - Optional parameters and search params
- * @returns The generated URL string
- */
-export function route<T extends string>(
-    template: T,
-    options?: {
-        params?: ParamRecord<T>;
-        search?: SearchParams;
-    }
-): string {
-    // Replace each [key] with its value
-    let result: string = template;
-    for (const key in options?.params || {}) {
-        const typedKey = key as ExtractParams<T>;
-        result = result.replace(
-            new RegExp(`\\[${typedKey}\\]`, "g"),
-            options!.params![typedKey]
-        );
-    }
-    
-    if (options?.search) {
-        const query = new URLSearchParams();
-        for (const key in options.search) {
-            const value = options.search[key];
-            if (value !== undefined) {
-                query.set(key, String(value));
-            }
-        }
-
-        const queryString = query.toString();
-        if (queryString) {
-            result += `?${queryString}`;
-        }
-    }
-
-    return result;
-}

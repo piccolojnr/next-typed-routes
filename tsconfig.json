@@ -20,6 +20,6 @@
     "jsx": "react-jsx",
     "types": ["node"]
   },
-  "include": ["src/**/*", "src/app/about/.page.tsx"],
+  "include": ["src/**/*", "src/app/about/.page.tsx", "route.ts"],
   "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
 }

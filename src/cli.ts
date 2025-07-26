@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import { generateRoutes } from "./generator-core";
-import { getDefaultOutputPath } from "./config";
 
 /**
  * Parse command line arguments

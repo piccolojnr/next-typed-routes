@@ -1,6 +1,6 @@
 {
   "name": "next-typed-routes",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Type-safe route generation and navigation for Next.js App Router",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -15,11 +15,6 @@
       "types": "./dist/cli.d.ts",
       "import": "./dist/cli.mjs",
       "require": "./dist/cli.js"
-    },
-    "./react": {
-      "types": "./dist/react.d.ts",
-      "import": "./dist/react.mjs",
-      "require": "./dist/react.js"
     }
   },
   "bin": {

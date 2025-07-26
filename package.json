@@ -1,6 +1,6 @@
 {
-  "name": "next-typed-routes",
-  "version": "0.2.0",
+  "name": "@piccolojnr/next-typed-routes",
+  "version": "1.1.0",
   "description": "Type-safe route generation and navigation for Next.js App Router",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -28,7 +28,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "clean": "rm -rf dist",
+    "clean": "rimraf dist",
     "prepublishOnly": "npm run clean && npm run build",
     "generate": "node dist/cli.js",
     "generate:watch": "node dist/cli.js --watch",
@@ -69,6 +69,7 @@
     "chokidar": "^3.5.3",
     "eslint": "^8.0.0",
     "jest": "^29.0.0",
+    "rimraf": "^6.0.1",
     "tsup": "^8.0.0",
     "typescript": "^5.3.0"
   },

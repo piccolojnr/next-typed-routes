@@ -1,68 +1,51 @@
 /**
- * Next Typed Routes - Type-safe route generation for Next.js App Router
+ * next-typed-routes - Type-safe route generation for Next.js App Router
  * 
- * This library provides tools to generate TypeScript definitions for Next.js routes
- * and offers type-safe navigation components.
+ * Main entry point for the library
  */
+
+// Core generation functionality
+export {
+    createRouteGenerator,
+    generateRoutes,
+} from "./generator-core";
+
+// Type generator
+export {
+    createTypeGenerator,
+} from "./generator";
+
+// Route scanner
+export {
+    createRouteScanner,
+} from "./scanner";
+
+// File watcher
+export {
+    createFileWatcher,
+} from "./watcher";
+
+// Configuration utilities
+export {
+    resolveConfig,
+    getDefaultPagesDir,
+    getDefaultOutputDir,
+    getDefaultGeneratedDir,
+} from "./config";
 
 // Core types
 export type {
     Options,
-    ParamRecord,
     RouteGenerator,
-    RouteScanner,
     TypeGenerator,
-} from "./types";
-
-export type { AppRoute } from "./typed-routes";
-
-// Route helper functions
-export { route } from "./route-helper";
-
-// Configuration
-export {
-    resolveConfig,
-    getDefaultPagesDir,
-    getDefaultOutputPath,
-    DEFAULT_CONFIG,
-} from "./config";
-
-// Core functionality
-export {
-    createRouteGenerator,
-    generateRoutes,
-    NextRouteGenerator,
-} from "./generator-core";
-
-// Utilities
-export {
-    isPageFile,
-    isRouteGroup,
-    pathToRoute,
-    validateDirectory,
-    ensureDirectory,
-} from "./utils";
-
-// Scanner
-export {
-    createRouteScanner,
-    NextRouteScanner,
-} from "./scanner";
-
-// Generator
-export {
-    createTypeGenerator,
-    NextTypeGenerator,
-} from "./generator";
-
-// Watcher
-export {
-    createFileWatcher,
+    RouteScanner,
     FileWatcher,
-} from "./watcher";
-
-// CLI
-export { cli } from "./cli";
+    ExtractParams,
+    ParamRecord,
+    RoutesWithParams,
+    RoutesWithoutParams,
+    SearchParams,
+} from "./types";
 
 // React components (re-export from react module)
 export {
@@ -70,3 +53,47 @@ export {
     createTypedRouter,
     useTypedRouter
 } from "./react";
+
+// Route utility function - core functionality that stays in the library
+import type { ExtractParams, ParamRecord, SearchParams } from "./types";
+
+/**
+ * Generate a URL from a route template with optional parameters and search params
+ * @param template - The route template (e.g., "/user/[id]")
+ * @param options - Optional parameters and search params
+ * @returns The generated URL string
+ */
+export function route<T extends string>(
+    template: T,
+    options?: {
+        params?: ParamRecord<T>;
+        search?: SearchParams;
+    }
+): string {
+    // Replace each [key] with its value
+    let result: string = template;
+    for (const key in options?.params || {}) {
+        const typedKey = key as ExtractParams<T>;
+        result = result.replace(
+            new RegExp(`\\[${typedKey}\\]`, "g"),
+            options!.params![typedKey]
+        );
+    }
+    
+    if (options?.search) {
+        const query = new URLSearchParams();
+        for (const key in options.search) {
+            const value = options.search[key];
+            if (value !== undefined) {
+                query.set(key, String(value));
+            }
+        }
+
+        const queryString = query.toString();
+        if (queryString) {
+            result += `?${queryString}`;
+        }
+    }
+
+    return result;
+}

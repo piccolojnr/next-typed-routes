@@ -3,7 +3,6 @@ import { defineConfig } from "tsup";
 export default defineConfig({
     entry: {
         index: "src/index.ts",
-        "route-helper": "src/route-helper.ts",
         cli: "src/cli.ts",
         react: "src/react.tsx",
     },

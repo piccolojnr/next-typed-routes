@@ -12,7 +12,7 @@ import type {
   ParamRecord,
   SearchParams,
 } from "./types";
-import { route } from "./route-helper";
+import { route } from "./index";
 
 /**
  * createTypedLink: Wrap Next.js Link with route interpolation and type-safety.

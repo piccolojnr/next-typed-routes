@@ -20,11 +20,6 @@
       "types": "./dist/react.d.ts",
       "import": "./dist/react.mjs",
       "require": "./dist/react.js"
-    },
-    "./route-helper": {
-      "types": "./dist/route-helper.d.ts",
-      "import": "./dist/route-helper.mjs",
-      "require": "./dist/route-helper.js"
     }
   },
   "bin": {

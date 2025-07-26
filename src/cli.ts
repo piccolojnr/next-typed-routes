@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import { generateRoutes } from "./generator-core";
-import { getDefaultOutputPath } from "./config";
 
 /**
  * Parse command line arguments
@@ -51,6 +50,7 @@ USAGE:
 OPTIONS:
   --watch, -w                    Watch for file changes and regenerate automatically
   --pages-dir, -p <path>         Custom pages directory path (default: src/app)
+  --output, -o <path>            Custom output file path (default: typed-routes/generated/routes.ts)
   --prefix <prefix>              Custom route prefix
   --include-route-groups         Include route groups in the output
   --help, -h                     Show this help message
@@ -58,7 +58,7 @@ OPTIONS:
 EXAMPLES:
   next-typed-routes                    # Generate once with defaults
   next-typed-routes --watch            # Watch mode
-  next-typed-routes -p app -o routes.d.ts  # Custom paths
+  next-typed-routes -p app -o custom/routes.ts  # Custom paths
   next-typed-routes --prefix /api      # Add route prefix
 
 CONFIGURATION:
@@ -67,13 +67,15 @@ CONFIGURATION:
   for type-safe navigation.
 
 OUTPUT:
-  Creates a typed-routes.d.ts file with:
-  - AppRoute union type of all available routes
-  - route() function for parameter substitution
-  - isValidRoute() function for runtime validation
+  Creates a clean typed-routes/ directory with:
+  - typed-routes/generated/routes.ts    # Type definitions and constants
+  - typed-routes/index.ts               # Barrel file with utilities
+
+USAGE IN YOUR CODE:
+  import { route, isValidRoute, AppRoute } from "@/typed-routes";
 
 For more information, visit: https://github.com/piccolojnr/next-typed-routes
-  `);
+    `.trim());
 }
 
 /**
@@ -82,7 +84,7 @@ For more information, visit: https://github.com/piccolojnr/next-typed-routes
 function showStartupInfo(options: ReturnType<typeof parseArgs>): void {
     console.log('🚀 Starting Next Typed Routes Generator');
     console.log(`📁 Pages directory: ${options.pagesDir || 'src/app'}`);
-    console.log(`📄 Output file: ${options.outputPath || 'src/typed-routes.d.ts'}`);
+    console.log(`📄 Output directory: typed-routes/`);
     console.log(`⚙️  Mode: ${options.watch ? 'Watch (continuous)' : 'Generate once'}`);
     if (options.routePrefix) {
         console.log(`🔗 Route prefix: ${options.routePrefix}`);

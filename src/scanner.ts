@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import type { RouteScanner } from "./types";
-import { isPageFile, isRouteGroup, pathToRoute, validateDirectory } from "./utils";
+import { isPageFile, isRouteGroup, isCatchAllRoute, pathToRoute, validateDirectory } from "./utils";
 
 /**
  * Route scanner implementation
@@ -26,8 +26,11 @@ export class NextRouteScanner implements RouteScanner {
         const routes: string[] = [];
         this.walkDirectory(baseDir, baseDir, routes);
 
-        // Remove duplicates and sort for consistent output
-        return Array.from(new Set(routes)).sort();
+        // Filter out catch-all routes and remove duplicates
+        const filteredRoutes = routes.filter(route => !isCatchAllRoute(route));
+
+        // Sort for consistent output
+        return Array.from(new Set(filteredRoutes)).sort();
     }
 
     /**

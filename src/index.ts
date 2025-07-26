@@ -1,72 +1,68 @@
 /**
- * Next Typed Routes - Type-safe route generation for Next.js App Router
+ * next-typed-routes - Type-safe route generation for Next.js App Router
  * 
- * This library provides tools to generate TypeScript definitions for Next.js routes
- * and offers type-safe navigation components.
+ * Main entry point for the library
  */
+
+// Core generation functionality
+export {
+    createRouteGenerator,
+    generateRoutes,
+} from "./generator-core";
+
+// Type generator
+export {
+    createTypeGenerator,
+} from "./generator";
+
+// Route scanner
+export {
+    createRouteScanner,
+} from "./scanner";
+
+// File watcher
+export {
+    createFileWatcher,
+} from "./watcher";
+
+// Configuration utilities
+export {
+    resolveConfig,
+    getDefaultPagesDir,
+    getDefaultOutputDir,
+    getDefaultGeneratedDir,
+} from "./config";
 
 // Core types
 export type {
     Options,
-    ParamRecord,
     RouteGenerator,
-    RouteScanner,
     TypeGenerator,
+    RouteScanner,
+    FileWatcher,
 } from "./types";
 
-export type { AppRoute } from "./typed-routes";
-
-// Route helper functions
-export { route } from "./route-helper";
-
-// Configuration
+// Route utilities
 export {
-    resolveConfig,
-    getDefaultPagesDir,
-    getDefaultOutputPath,
-    DEFAULT_CONFIG,
-} from "./config";
+    route,
+    isValidRoute,
+    getAllRoutes
+} from "./typed-routes/route";
 
-// Core functionality
-export {
-    createRouteGenerator,
-    generateRoutes,
-    NextRouteGenerator,
-} from "./generator-core";
-
-// Utilities
-export {
-    isPageFile,
-    isRouteGroup,
-    pathToRoute,
-    validateDirectory,
-    ensureDirectory,
-} from "./utils";
-
-// Scanner
-export {
-    createRouteScanner,
-    NextRouteScanner,
-} from "./scanner";
-
-// Generator
-export {
-    createTypeGenerator,
-    NextTypeGenerator,
-} from "./generator";
-
-// Watcher
-export {
-    createFileWatcher,
-    FileWatcher,
-} from "./watcher";
-
-// CLI
-export { cli } from "./cli";
+// Route types
+export type {
+    ExtractParams,
+    ParamRecord,
+    RoutesWithParams,
+    RoutesWithoutParams,
+    SearchParams
+} from "./typed-routes/route";
 
 // React components (re-export from react module)
 export {
     createTypedLink,
     createTypedRouter,
     useTypedRouter
-} from "./react";
+} from "./typed-routes/react";
+
+

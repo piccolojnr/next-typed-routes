@@ -16,23 +16,32 @@ export function isRouteGroup(dirname: string): boolean {
 }
 
 /**
+ * Check if a route is a catch-all route (contains [...param])
+ */
+export function isCatchAllRoute(route: string): boolean {
+    return route.includes('[...');
+}
+
+/**
  * Convert file system path to URL route
  */
 export function pathToRoute(filePath: string, baseDir: string, includeRouteGroups: boolean = false): string {
     const relativePath = filePath.replace(baseDir, '').replace(/\\/g, '/');
     let route = relativePath.replace(/\/page\.(tsx|ts|jsx|js)$/, '');
 
-    // Ensure route starts with a single slash
-    if (!route.startsWith('/')) {
-        route = '/' + route;
-    }
-
-    // Handle root route
-    if (route === "/." || route === "/") route = "/";
-
     // Remove route groups if not included
     if (!includeRouteGroups) {
         route = route.replace(/\/\([^)]+\)/g, "");
+    }
+
+    // Handle root route - ensure it's always "/"
+    if (route === "/." || route === "/" || route === "") {
+        route = "/";
+    }
+
+    // Ensure route starts with a single slash (except for root)
+    if (route !== "/" && !route.startsWith('/')) {
+        route = '/' + route;
     }
 
     // Keep dynamic segments as [paramName] format (don't convert to ${paramName})

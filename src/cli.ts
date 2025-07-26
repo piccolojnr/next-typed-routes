@@ -1,0 +1,127 @@
+#!/usr/bin/env node
+
+import { generateRoutes } from "./generator-core";
+import { getDefaultOutputPath } from "./config";
+
+/**
+ * Parse command line arguments
+ */
+function parseArgs(): {
+    watch: boolean;
+    help: boolean;
+    pagesDir?: string;
+    outputPath?: string;
+    routePrefix?: string;
+    includeRouteGroups: boolean;
+} {
+    const args = process.argv.slice(2);
+
+    return {
+        watch: args.includes("--watch") || args.includes("-w"),
+        help: args.includes("--help") || args.includes("-h"),
+        pagesDir: getArgValue("--pages-dir") || getArgValue("-p"),
+        // outputPath: getArgValue("--output") || getArgValue("-o"),
+        routePrefix: getArgValue("--prefix"),
+        includeRouteGroups: args.includes("--include-route-groups"),
+    };
+}
+
+/**
+ * Get value for a command line argument
+ */
+function getArgValue(flag: string): string | undefined {
+    const args = process.argv.slice(2);
+    const index = args.indexOf(flag);
+    if (index !== -1 && index + 1 < args.length) {
+        return args[index + 1];
+    }
+    return undefined;
+}
+
+/**
+ * Display help information
+ */
+function showHelp(): void {
+    console.log(`
+🚀 Next Typed Routes - Type-safe route generation for Next.js App Router
+
+USAGE:
+  next-typed-routes [OPTIONS]
+
+OPTIONS:
+  --watch, -w                    Watch for file changes and regenerate automatically
+  --pages-dir, -p <path>         Custom pages directory path (default: src/app)
+  --prefix <prefix>              Custom route prefix
+  --include-route-groups         Include route groups in the output
+  --help, -h                     Show this help message
+
+EXAMPLES:
+  next-typed-routes                    # Generate once with defaults
+  next-typed-routes --watch            # Watch mode
+  next-typed-routes -p app -o routes.d.ts  # Custom paths
+  next-typed-routes --prefix /api      # Add route prefix
+
+CONFIGURATION:
+  The generator scans for page files (page.tsx, page.ts, page.jsx, page.js)
+  in your Next.js App Router structure and generates TypeScript definitions
+  for type-safe navigation.
+
+OUTPUT:
+  Creates a typed-routes.d.ts file with:
+  - AppRoute union type of all available routes
+  - route() function for parameter substitution
+  - isValidRoute() function for runtime validation
+
+For more information, visit: https://github.com/piccolojnr/next-typed-routes
+  `);
+}
+
+/**
+ * Display startup information
+ */
+function showStartupInfo(options: ReturnType<typeof parseArgs>): void {
+    console.log('🚀 Starting Next Typed Routes Generator');
+    console.log(`📁 Pages directory: ${options.pagesDir || 'src/app'}`);
+    console.log(`📄 Output file: ${options.outputPath || 'src/typed-routes.d.ts'}`);
+    console.log(`⚙️  Mode: ${options.watch ? 'Watch (continuous)' : 'Generate once'}`);
+    if (options.routePrefix) {
+        console.log(`🔗 Route prefix: ${options.routePrefix}`);
+    }
+    if (options.includeRouteGroups) {
+        console.log(`📂 Including route groups`);
+    }
+    console.log('─'.repeat(50));
+}
+
+/**
+ * CLI entry point
+ */
+function main(): void {
+    const args = parseArgs();
+
+    if (args.help) {
+        showHelp();
+        process.exit(0);
+    }
+
+    showStartupInfo(args);
+
+    try {
+        generateRoutes({
+            watch: args.watch,
+            pagesDir: args.pagesDir,
+            routePrefix: args.routePrefix,
+            includeRouteGroups: args.includeRouteGroups,
+        });
+    } catch (error) {
+        console.error('❌ Failed to generate routes:', error);
+        process.exit(1);
+    }
+}
+
+// Run CLI if this file is executed directly
+if (require.main === module) {
+    main();
+}
+
+export { main as cli }; 

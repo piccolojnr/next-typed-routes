@@ -15,13 +15,13 @@ export default defineConfig({
     treeshake: true,
     external: ["next", "react", "react-dom"],
     onSuccess: async () => {
-        // Copy typed-routes files to dist directory
+        // Copy shared files to dist directory
         try {
-            mkdirSync("dist/typed-routes", { recursive: true });
-            copyFileSync("src/typed-routes/route.ts", "dist/typed-routes/route.ts");
-            copyFileSync("src/typed-routes/react.tsx", "dist/typed-routes/react.tsx");
+            mkdirSync("dist/shared", { recursive: true });
+            copyFileSync("src/shared/route.ts", "dist/shared/route.ts");
+            copyFileSync("src/shared/react.tsx", "dist/shared/react.tsx");
         } catch (error) {
-            console.warn("Failed to copy typed-routes files:", error);
+            console.warn("Failed to copy shared files:", error);
         }
     },
 }); 

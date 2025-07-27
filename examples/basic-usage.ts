@@ -1,45 +1,47 @@
-/**
- * Basic usage example for next-typed-routes
- * 
- * This example shows how to use the library programmatically
- * to generate route types for a Next.js application.
- */
+// Basic usage example for @piccolojnr/next-typed-routes
+// This shows the simplest way to use the library
 
-import { generateRoutes, createRouteGenerator } from "../src";
+import { route, isValidRoute } from "../typed-routes";
 
-// Example 1: Basic generation with defaults
-console.log("Example 1: Basic generation");
-generateRoutes();
+// Simple static route
+const homeUrl = route("/");
+console.log("Home URL:", homeUrl); // "/"
 
-// Example 2: Custom configuration
-console.log("\nExample 2: Custom configuration");
-generateRoutes({
-    pagesDir: "src/app",
-    outputPath: "types/routes.d.ts",
-    routePrefix: "/api",
-    includeRouteGroups: true,
-    watch: false,
+// Static route with search parameters
+const aboutUrl = route("/about", { search: { tab: "info" } });
+console.log("About URL:", aboutUrl); // "/about?tab=info"
+
+// Dynamic route with parameters
+const userUrl = route("/user/[id]", { params: { id: "123" } });
+console.log("User URL:", userUrl); // "/user/123"
+
+// Dynamic route with parameters and search
+const userWithSearch = route("/user/[id]", {
+    params: { id: "123" },
+    search: { sort: "asc", filter: "active" }
 });
+console.log("User with search:", userWithSearch); // "/user/123?sort=asc&filter=active"
 
-// Example 3: Advanced usage with generator instance
-console.log("\nExample 3: Advanced usage");
-const generator = createRouteGenerator({
-    pagesDir: "src/app",
-    outputPath: "types/custom-routes.d.ts",
-    routePrefix: "/v1",
+// Nested dynamic routes
+const postUrl = route("/user/[id]/posts/[postId]", {
+    params: { id: "123", postId: "abc" }
 });
+console.log("Post URL:", postUrl); // "/user/123/posts/abc"
 
-// Scan routes only
-const routes = generator.scanRoutes();
-console.log("Discovered routes:", routes);
+// Route validation
+console.log("Route validation examples:");
+console.log(`  /user/123 is valid: ${isValidRoute("/user/123")}`);
+console.log(`  /user/123/posts/abc is valid: ${isValidRoute("/user/123/posts/abc")}`);
+console.log(`  /invalid/route is valid: ${isValidRoute("/invalid/route")}`);
+console.log(`  /about is valid: ${isValidRoute("/about")}`);
 
-// Generate types only
-generator.generateTypes(routes);
+// Type safety example
+function navigateToUser(userId: string) {
+    // This is type-safe - TypeScript will ensure userId is a string
+    return route("/user/[id]", { params: { id: userId } });
+}
 
-// Example 4: Watch mode for development
-console.log("\nExample 4: Watch mode (commented out)");
-// generateRoutes({
-//   watch: true,
-//   pagesDir: "src/app",
-//   outputPath: "types/routes.d.ts",
-// }); 
+const user1Url = navigateToUser("user-123");
+const user2Url = navigateToUser("user-456");
+
+console.log("Type-safe navigation:", { user1Url, user2Url }); 

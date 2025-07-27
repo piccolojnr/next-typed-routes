@@ -1,6 +1,6 @@
 {
   "name": "@piccolojnr/next-typed-routes",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Type-safe route generation and navigation for Next.js App Router",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

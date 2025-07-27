@@ -1,4 +1,4 @@
-// Example usage of next-typed-routes with the new clean structure
+// Example usage of @piccolojnr/next-typed-routes with the new clean structure
 // This demonstrates how to use the generated types and utilities
 
 // Import everything from the generated barrel file

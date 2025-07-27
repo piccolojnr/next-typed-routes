@@ -1,10 +1,10 @@
 /**
- * Example usage of next-typed-routes React components with the new clean structure
+ * Example usage of @piccolojnr/next-typed-routes React components with the new clean structure
  */
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { createTypedLink, createTypedRouter } from "next-typed-routes/react";
+import { createTypedLink, createTypedRouter } from "../typed-routes/react";
 
 // Import types from the generated barrel file
 import type { AppRoute } from "../typed-routes";
@@ -103,7 +103,7 @@ export function TypeSafetyExample() {
 export default function ReactUsageExample() {
   return (
     <div>
-      <h1>Next Typed Routes - React Usage Example</h1>
+      <h1>@piccolojnr/next-typed-routes - React Usage Example</h1>
       <NavigationExample />
       <ProgrammaticNavigationExample />
       <TypeSafetyExample />

@@ -1,7 +1,7 @@
 # Next Typed Routes - Library Structure
 
 This document outlines the complete structure and architecture of the
-`next-typed-routes` library.
+`@piccolojnr/next-typed-routes` library.
 
 ## 📁 Directory Structure
 
@@ -10,17 +10,26 @@ next-typed-routes/
 ├── src/                          # Source code
 │   ├── index.ts                  # Main exports
 │   ├── cli.ts                    # Command-line interface
-│   ├── react.ts                  # React components
 │   ├── types.ts                  # Type definitions
 │   ├── config.ts                 # Configuration utilities
 │   ├── utils.ts                  # Utility functions
 │   ├── scanner.ts                # Route discovery
 │   ├── generator.ts              # Type generation
 │   ├── watcher.ts                # File watching
-│   └── generator-core.ts         # Main orchestrator
+│   ├── generator-core.ts         # Main orchestrator
+│   └── shared/                   # Shared utilities
+│       ├── route.ts              # Route utilities
+│       ├── react.tsx             # React components
+│       └── generated/            # Generated files (development)
+│           └── routes.ts         # Sample generated routes
 ├── examples/                     # Usage examples
-│   ├── basic-usage.ts           # Programmatic usage
+│   ├── usage-example.ts         # Programmatic usage
 │   └── react-usage.tsx          # React components
+├── typed-routes/                 # Generated output (clean structure)
+│   ├── generated/
+│   │   └── routes.ts            # Generated types and constants
+│   ├── route.ts                 # Route utilities and types
+│   └── react.tsx                # React components
 ├── dist/                         # Build output (generated)
 ├── package.json                  # Package configuration
 ├── tsconfig.json                 # TypeScript configuration
@@ -83,6 +92,12 @@ next-typed-routes/
 - Configuration management
 - Process coordination
 
+#### 8. **Shared Utilities** (`src/shared/`)
+
+- **Route Utilities** (`route.ts`) - Core route generation and validation
+- **React Components** (`react.tsx`) - Type-safe React wrappers
+- **Generated Routes** (`generated/routes.ts`) - Sample generated output
+
 ### Entry Points
 
 #### 1. **Main Library** (`src/index.ts`)
@@ -98,21 +113,20 @@ next-typed-routes/
 - Help documentation
 - Process execution
 
-#### 3. **React Components** (`src/react.ts`)
+#### 3. **Generated Output** (`typed-routes/`)
 
-- Type-safe Link component
-- Type-safe Button component
-- Router hook wrapper
-- Factory functions for Next.js integration
+- **Generated Routes** (`generated/routes.ts`) - Type definitions and constants
+- **Route Utilities** (`route.ts`) - Route generation and validation functions
+- **React Components** (`react.tsx`) - Type-safe React component factories
 
 ## 🔧 Build Configuration
 
 ### Package.json Features
 
-- **Multiple entry points**: Main library, CLI, React components
+- **Multiple entry points**: Main library, CLI
 - **Dual format support**: CommonJS and ES modules
 - **TypeScript declarations**: Automatic .d.ts generation
-- **CLI binary**: `next-typed-routes` command
+- **CLI binary**: `@piccolojnr/next-typed-routes` command
 - **Peer dependencies**: Next.js and React
 
 ### Tsup Configuration
@@ -139,11 +153,6 @@ next-typed-routes/
             "import": "./dist/cli.mjs",
             "require": "./dist/cli.js",
             "types": "./dist/cli.d.ts"
-        },
-        "./react": {
-            "import": "./dist/react.mjs",
-            "require": "./dist/react.js",
-            "types": "./dist/react.d.ts"
         }
     }
 }
@@ -154,7 +163,7 @@ next-typed-routes/
 ```json
 {
     "bin": {
-        "next-typed-routes": "./dist/cli.js"
+        "@piccolojnr/next-typed-routes": "./dist/cli.js"
     }
 }
 ```
@@ -165,34 +174,38 @@ next-typed-routes/
 
 ```bash
 # Basic generation
-next-typed-routes
+@piccolojnr/next-typed-routes
 
 # Watch mode
-next-typed-routes --watch
+@piccolojnr/next-typed-routes --watch
 
 # Custom configuration
-next-typed-routes --pages-dir app --output types/routes.d.ts
+@piccolojnr/next-typed-routes --pages-dir app --output types/routes.d.ts
 ```
 
 ### 2. **Programmatic Usage**
 
 ```typescript
-import { generateRoutes } from "next-typed-routes";
+import { generateRoutes } from "@piccolojnr/next-typed-routes";
 
 generateRoutes({
     pagesDir: "src/app",
-    outputPath: "types/routes.d.ts",
+    outputPath: "typed-routes/generated/routes.ts",
     watch: true,
 });
 ```
 
-### 3. **React Integration**
+### 3. **Generated Output Usage**
 
 ```typescript
-import { createTypedLink, createTypedRouter } from "next-typed-routes/react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+// Import from generated files
+import { AppRoute, isValidRoute, route } from "@/typed-routes";
+import { createTypedLink, createTypedRouter } from "@/typed-routes/react";
 
+// Use route utilities
+const userUrl = route("/user/[id]", { params: { id: "123" } });
+
+// Use React components
 const TypedLink = createTypedLink(Link);
 const useTypedRouter = createTypedRouter(useRouter);
 ```
@@ -257,6 +270,13 @@ npm publish            # Publish to npm
 - React component integration
 - Build tool compatibility
 - CI/CD friendly
+
+### Clean Architecture
+
+- **No src/ pollution**: Generated files in dedicated directory
+- **Modular structure**: Separate files for different concerns
+- **Version control friendly**: Easy to manage generated files
+- **Tree-shakeable**: Import only what you need
 
 ## 🔮 Future Enhancements
 

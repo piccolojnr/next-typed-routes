@@ -4,7 +4,7 @@
  * Provides type-safe React wrappers for Next.js Link and router.
  */
 import React from "react";
-import { LinkProps } from "next/link";
+import Link, { LinkProps } from "next/link";
 import { useRouter as nextUseRouter } from "next/navigation";
 import type {
   RoutesWithParams,
@@ -40,15 +40,15 @@ export function createTypedLink<CompProps extends LinkProps>(
       ? DynamicLinkProps<T>
       : StaticLinkProps<T & RoutesWithoutParams>
   ) {
-    // At runtime, construct final URL
-    const final = route(
-      props.href as any,
+    const final =
       "params" in props && props.params
-        ? { params: props.params, search: props.search }
-        : { search: props.search }
-    );
+        ? route(props.href as any, {
+            params: props.params,
+            search: props.search,
+          })
+        : route(props.href as any, { search: props.search });
 
-    // Spread LinkProps except `href`
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { children, params, search, href, ...rest } = props as any;
     return (
       <Component {...(rest as CompProps)} href={final}>
@@ -99,5 +99,23 @@ export function createTypedRouter(useRouter = nextUseRouter) {
   };
 }
 
-// useTypedRouter hook
+const tp = React.forwardRef(
+  (props: LinkProps, ref: React.Ref<HTMLAnchorElement>) => (
+    <Link {...props} ref={ref} />
+  )
+);
+tp.displayName = "LinkComponent";
+
+/**
+ * TypedLink: A type-safe wrapper around Next.js Link component.
+ * It allows you to use route templates with type-safe parameters and search queries.
+ */
+export const TypedLink = tp as typeof Link & {
+  createTypedLink: typeof createTypedLink;
+};
+
+/**
+ * useTypedRouter: A type-safe hook to access Next.js router methods.
+ * It provides type-safe navigation methods that respect your route definitions.
+ */
 export const useTypedRouter = createTypedRouter(nextUseRouter);

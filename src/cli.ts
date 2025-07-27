@@ -42,10 +42,10 @@ function getArgValue(flag: string): string | undefined {
  */
 function showHelp(): void {
     console.log(`
-🚀 Next Typed Routes - Type-safe route generation for Next.js App Router
+🚀 @piccolojnr/next-typed-routes - Type-safe route generation for Next.js App Router
 
 USAGE:
-  next-typed-routes [OPTIONS]
+  @piccolojnr/next-typed-routes [OPTIONS]
 
 OPTIONS:
   --watch, -w                    Watch for file changes and regenerate automatically
@@ -56,10 +56,10 @@ OPTIONS:
   --help, -h                     Show this help message
 
 EXAMPLES:
-  next-typed-routes                    # Generate once with defaults
-  next-typed-routes --watch            # Watch mode
-  next-typed-routes -p app -o custom/routes.ts  # Custom paths
-  next-typed-routes --prefix /api      # Add route prefix
+  @piccolojnr/next-typed-routes                    # Generate once with defaults
+  @piccolojnr/next-typed-routes --watch            # Watch mode
+  @piccolojnr/next-typed-routes -p app -o custom/routes.ts  # Custom paths
+  @piccolojnr/next-typed-routes --prefix /api      # Add route prefix
 
 CONFIGURATION:
   The generator scans for page files (page.tsx, page.ts, page.jsx, page.js)
@@ -69,10 +69,12 @@ CONFIGURATION:
 OUTPUT:
   Creates a clean typed-routes/ directory with:
   - typed-routes/generated/routes.ts    # Type definitions and constants
-  - typed-routes/index.ts               # Barrel file with utilities
+  - typed-routes/route.ts               # Route utilities and types
+  - typed-routes/react.tsx              # React components
 
 USAGE IN YOUR CODE:
   import { route, isValidRoute, AppRoute } from "@/typed-routes";
+  import { createTypedLink, createTypedRouter } from "@/typed-routes/react";
 
 For more information, visit: https://github.com/piccolojnr/next-typed-routes
     `.trim());
@@ -82,7 +84,7 @@ For more information, visit: https://github.com/piccolojnr/next-typed-routes
  * Display startup information
  */
 function showStartupInfo(options: ReturnType<typeof parseArgs>): void {
-    console.log('🚀 Starting Next Typed Routes Generator');
+    console.log('🚀 Starting @piccolojnr/next-typed-routes Generator');
     console.log(`📁 Pages directory: ${options.pagesDir || 'src/app'}`);
     console.log(`📄 Output directory: typed-routes/`);
     console.log(`⚙️  Mode: ${options.watch ? 'Watch (continuous)' : 'Generate once'}`);

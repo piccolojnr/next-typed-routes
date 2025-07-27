@@ -1,5 +1,5 @@
 /**
- * next-typed-routes - Type-safe route generation for Next.js App Router
+ * @piccolojnr/next-typed-routes - Type-safe route generation for Next.js App Router
  * 
  * Main entry point for the library
  */

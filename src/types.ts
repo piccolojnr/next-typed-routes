@@ -1,20 +1,20 @@
 /**
- * Core types for next-typed-routes library
+ * Core types for @piccolojnr/next-typed-routes library
  */
 
 export type Options = {
-    /** Enable watch mode for automatic regeneration on file changes */
-    watch?: boolean;
-    /** Custom pages directory path */
-    pagesDir?: string;
-    /** Custom output file path */
-    outputPath?: string;
-    /** Custom route prefix */
-    routePrefix?: string;
-    /** Whether to include route groups in the output */
-    includeRouteGroups?: boolean;
-    /** Custom file extensions to scan */
-    extensions?: readonly string[];
+  /** Enable watch mode for automatic regeneration on file changes */
+  watch?: boolean;
+  /** Custom pages directory path */
+  pagesDir?: string;
+  /** Custom output file path */
+  outputPath?: string;
+  /** Custom route prefix */
+  routePrefix?: string;
+  /** Whether to include route groups in the output */
+  includeRouteGroups?: boolean;
+  /** Custom file extensions to scan */
+  extensions?: readonly string[];
 };
 
 export type PageExtensions = readonly ["page.tsx", "page.ts", "page.jsx", "page.js"];
@@ -47,32 +47,32 @@ export type { SearchParams };
  * Interface for route generators
  */
 export interface RouteGenerator {
-    scanRoutes(baseDir?: string): string[];
-    generateTypes(routes: string[], outputPath?: string): void;
-    run(options?: Options): void;
-    getConfig(): Required<Options>;
-    updateConfig(options: Partial<Options>): void;
+  scanRoutes(baseDir?: string): string[];
+  generateTypes(routes: string[], outputPath?: string): void;
+  run(options?: Options): void;
+  getConfig(): Required<Options>;
+  updateConfig(options: Partial<Options>): void;
 }
 
 /**
  * Interface for type generators
  */
 export interface TypeGenerator {
-    generateTypes(routes: string[], outputPath: string): void;
+  generateTypes(routes: string[], outputPath: string): void;
 }
 
 /**
  * Interface for route scanners
  */
 export interface RouteScanner {
-    scanRoutes(baseDir: string): string[];
+  scanRoutes(baseDir: string): string[];
 }
 
 /**
  * Interface for file watchers
  */
 export interface FileWatcher {
-    setupWatcher(directory: string, callback: () => void): void;
+  setupWatcher(directory: string, callback: () => void): void;
 }
 
 

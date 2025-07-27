@@ -30,11 +30,6 @@ dist-ssr
 # (no gitignore entry needed)
 
 # Old generated files from previous versions (always ignore)
-src/typed-routes.d.ts
-src/typed-routes.ts
-routes.d.ts
-routes.ts
-routes.js 
 next-typed-routes-0.1.0.tgz
 
 typed-routes/

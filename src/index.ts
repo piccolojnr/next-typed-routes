@@ -47,7 +47,7 @@ export {
     route,
     isValidRoute,
     getAllRoutes
-} from "./typed-routes/route";
+} from "./shared/route";
 
 // Route types
 export type {
@@ -56,13 +56,13 @@ export type {
     RoutesWithParams,
     RoutesWithoutParams,
     SearchParams
-} from "./typed-routes/route";
+} from "./shared/route";
 
 // React components (re-export from react module)
 export {
     createTypedLink,
     createTypedRouter,
     useTypedRouter
-} from "./typed-routes/react";
+} from "./shared/react";
 
 

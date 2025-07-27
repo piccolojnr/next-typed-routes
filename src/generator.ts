@@ -48,12 +48,12 @@ export class NextTypeGenerator implements TypeGenerator {
             // Write barrel file to main typed-routes directory
             const barrelPath = path.join(typedRoutesDir, "route.ts");
             // fs.writeFileSync(barrelPath, barrelContent, 'utf8');
-            // Copy route.ts to the typed-routes directory
+            // Copy route.ts to the shared directory
             // Use path relative to the library's bundled files in dist
-            const librarySrcDir = path.join(__dirname, 'typed-routes');
+            const librarySrcDir = path.join(__dirname, 'shared');
             const routePath = path.join(typedRoutesDir, "route.ts");
             fs.copyFileSync(path.join(librarySrcDir, 'route.ts'), routePath);
-            // Copy react.tsx to the typed-routes directory
+            // Copy react.tsx to the shared directory
             const reactPath = path.join(typedRoutesDir, "react.tsx");
             fs.copyFileSync(path.join(librarySrcDir, 'react.tsx'), reactPath);
 
